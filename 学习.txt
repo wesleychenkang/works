@@ -1,0 +1,105 @@
+1.linux 内存溢出(oom)和内存泄漏(leak)
+
+   
+ 内存泄漏是指你向系统申请分配内存进行使用(new)，可是使用完了以后却不归还(delete)，结果你申请到的那块内存你自己也不能再访问（也许你把它的地址给弄丢了），而系统也不能再次将它分配给需要的程序
+
+ 内存溢出 是指程序在申请内存时，没有足够的内存空间供其使用，出现out of memory；比如申请了一个integer,但给它存了long才能存下的数，那就是内存溢出
+ 
+  memory leak会最终会导致out of memory！
+
+
+ 当内存严重不足时，内核有两种选择：
+          1.直接panic 
+          2.杀掉部分进程，释放一些内核。
+ 
+对于每个进程都有一个oom_score的属性（/proc/PID/oom_score），oom killer会杀死oom_score较大的进程，当oom_score为0时禁止内核杀死该进程
+对过设置/proc/PID/oom_adj可以改变oom_score，oom_adj的范围为【-17，15】，当oom_adj=-17时，oom_score将变为0。
+oom_adj的可调值为15到-16，其中15最大-16最小，-17为禁止使用OOM。oom_score为2的n次方计算出来的，其中n就是进程的oom_adj值，所以oom_score的分数越高就越会被内核优先杀掉。
+
+ 综上，可以通过命令 echo 0 > /proc/PID/oom_adj 来防止进程被oom_killer杀死。
+
+参考资料 http://wushank.blog.51cto.com/3489095/1406765;
+
+
+           https://github.com/Yhzhtk/note/issues/31
+
+
+
+
+
+2. sqlite 使用
+
+     问题点 sqlite3命令无法执行
+
+      1. sqlite3 如何获取，通过DDMS--》FileExplorer文件下找到system/xbin，将sqlite3 pull到电脑上面
+
+      2. 将sqlite3 文件push到sdcard上面  ， 例如 adb push D:/sqlite3  /sdcard/sqlite3
+
+      3. 赋予 system/xbin的读写权限           1.先切换到root用户下面 2. mount -o rw,remount -t yaffs2 /system     3. chmod 777 /system    4 .cd system  5.chmod 777 xbin
+  
+
+      4. 将sqlite3文件cat 到 system/xbin目录  cat /sdcard/sqlite3 > /system/xbin
+      
+      5. 将 system/xbin/sqlite3文件赋予可执行权限  chmod 4755 /system/xbin/sqlite3  (下次试一下 chmod 755 /system/xbin/sqlite3）
+
+      6. 打开data/data/ 找到指定的databases .然后执行sqlite3  aa.db 
+     
+      7. 使用.table查看有多少张表
+
+      8. pragma table_info(TABLE_NAME)  查看表的列组成  
+      9. .mode line命令切换显示模式， .quit (退出）， .help
+      10 http://www.runoob.com/sqlite/sqlite-commands.html ； sqlite命令帮助文档
+
+     11. sqlite时间插入 eg:  CreatedTime TimeStamp NOT NULL DEFAULT (datetime('now','localtime')) ---CreatedTime 为列名
+
+  http://www.runoob.com/               ----帮助文档集
+     
+
+ 3. 文件可读写权限的另外一种做法
+   
+  eg:    mount -o rw,remount -t yaffs2 /system  挂载system目录的可读写
+
+         
+ 
+
+ 3. 文件读取出现乱码 ，读取字符串后，有时有空格，空格被读取后可能会出现乱码;解决办法，读取后然后调用String字符串的trim方法；
+
+
+
+ 4. 使用git管理相关项目
+
+
+ 5.内存泄漏导致应用会重新创建（Application onCreate 方法会重新调用 ） DVM虚拟机会重新创建
+     1.list.remove越界
+     2. SharedPreference 将Long类型保存在int类型里面
+ 
+ 6. 系统回收内存有可能导致Service的生命周期会重建
+
+ 7. proguard 混淆android代码  
+
+ -assumenosideeffects class android.util.Log {
+public static boolean isLoggable(java.lang.String,int);
+
+public static int v(...);
+
+public static int i(...);
+
+public static int w(...);
+
+public static int d(...);
+
+public static int e(...);
+
+}
+
+
+以上代码可以将日志Log去掉；
+                         
+-dontwarn com.top.xutils.util.OtherUtils  可以忽略proguard指定类上面的报错的日志 例如缺少相关联的类
+
+
+   
+
+      
+   
+    

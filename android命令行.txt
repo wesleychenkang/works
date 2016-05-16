@@ -1,0 +1,13 @@
+android命令记录，生成jar
+
+dx --dex --output=load_dex.jar load.jar
+
+
+git 命令
+
+git 忽略一些文件夹下面的内容
+
+vim  .gitignore 然后编辑 /bin 就可以直接忽略bin文件下面的目录
+
+
+keytool -genkey -alias android.keystore -keyalg RSA -validity 20000 -keystore android.keystore   ---》生成签名文件
