@@ -47,7 +47,9 @@ oom_adj的可调值为15到-16，其中15最大-16最小，-17为禁止使用OOM。oom_score为2的n次
       7. 使用.table查看有多少张表
 
       8. pragma table_info(TABLE_NAME)  查看表的列组成  
+
       9. .mode line命令切换显示模式， .quit (退出）， .help
+
       10 http://www.runoob.com/sqlite/sqlite-commands.html ； sqlite命令帮助文档
 
      11. sqlite时间插入 eg:  CreatedTime TimeStamp NOT NULL DEFAULT (datetime('now','localtime')) ---CreatedTime 为列名
@@ -98,6 +100,57 @@ public static int e(...);
 -dontwarn com.top.xutils.util.OtherUtils  可以忽略proguard指定类上面的报错的日志 例如缺少相关联的类
 
 
+
+8.ant 打包编译使用
+ 1. proguard   -libraryjars 'libs/UPPayAssistEx.jar' 没有该UPPayAssistEx.jar文件时不能使用
+
+ 2. android update project -p F:\workplace\PlugSdk 可以用来生成build.xml文件 -p 项目的绝对路径
+
+ 3. 打包jar文件时，排除的class文件不能超过4个地方
+
+ 4.暂时将脚本学习到此处 test
+
+
+9. 反编译与重新打包学习
+
+   1.官网下载地址  http://ibotpeaches.github.io/Apktool/
+     http://ibotpeaches.github.io/Apktool/install/ 安装使用文档
+     例如： apktool d test.apk；可以解压很多文件出来
+     
+   2.smill使用
+
+  下载地址  https://bitbucket.org/JesusFreke/smali/downloads
+ 
+  首先把baksmali-1.4.1.jar和smali-1.4.1.jar文件放到android sdk安装路径下的tools里面，把apk用WinRAR解压并提取classes.dex文件，也放入tools里面，然后用命令行，cd tools目录下，输入java命令：
+  java -jar baksmali-1.4.1.jar -o classout/ classes.dex 
+
+  修改classout文件下的smali文件，然后再打包回去
+ java -jar smali-1.4.1.jar classout/ -o classes.dex -->打包回去
+  
+   可以参考下 http://blog.sina.com.cn/s/blog_7c6cbaf601019604.html
+
+
+ 问题点有的classes.dex文件无法将所有的文件反编译过来
+
+  3.如何重新打包和修改文件
+
+    1. 目前来看只能修改smali文件然后才能进行重新打包
+
+    2. smali语法的学习
+
+   
+
+
+
+
+
+
+
+ 
+ 
+
+
+   
    
 
       
